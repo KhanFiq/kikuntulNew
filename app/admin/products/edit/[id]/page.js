@@ -34,9 +34,13 @@ export default function EditProductPage() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm((prev) => ({ ...prev, image: reader.result }));
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
       setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
-      setForm({ ...form, image: "" }); // Kosongkan input URL jika upload file
     }
   };
 
@@ -49,27 +53,10 @@ export default function EditProductPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    let imageUrl = form.image;
-    if (imageFile) {
-      const data = new FormData();
-      data.append("file", imageFile);
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
-      });
-      if (uploadRes.ok) {
-        const result = await uploadRes.json();
-        imageUrl = result.base64; // gunakan base64
-      } else {
-        setLoading(false);
-        Swal.fire("Gagal", "Gagal upload gambar", "error");
-        return;
-      }
-    }
     const res = await fetch(`/api/products?id=${params.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...form, image: imageUrl, price: Number(form.price) }),
+      body: JSON.stringify({ ...form, price: Number(form.price) }),
     });
     setLoading(false);
     if (res.ok) {
