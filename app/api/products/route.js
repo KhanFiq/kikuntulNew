@@ -2,6 +2,9 @@ import dbConnect from '@/lib/mongodb';
 import Product from '@/models/Product';
 import { NextResponse } from 'next/server';
 
+// Tambahkan konfigurasi agar Next.js menerima body besar (base64 image)
+export const maxRequestBodySize = '10mb';
+
 // GET: List all products or get by id
 export async function GET(req) {
   try {
