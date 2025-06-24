@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 
 export const runtime = 'nodejs';
@@ -13,6 +13,8 @@ export async function POST(req) {
   const ext = file.name.split('.').pop();
   const fileName = `${Date.now()}-${Math.random().toString(36).substring(2,8)}.${ext}`;
   const uploadDir = path.join(process.cwd(), 'public', 'uploads');
+  // Pastikan folder uploads ada
+  await mkdir(uploadDir, { recursive: true });
   const filePath = path.join(uploadDir, fileName);
   await writeFile(filePath, buffer);
   const url = `/uploads/${fileName}`;
