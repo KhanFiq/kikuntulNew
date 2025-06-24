@@ -26,7 +26,8 @@ export default function LoginPage() {
     if (res.ok) {
       Swal.fire('Sukses', 'Login berhasil', 'success').then(() => window.location = '/');
     } else {
-      Swal.fire('Gagal', 'Email atau password salah', 'error');
+      // Tampilkan error detail jika ada
+      Swal.fire('Gagal', res.error || 'Email atau password salah', 'error');
     }
   };
 
