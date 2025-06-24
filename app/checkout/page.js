@@ -98,8 +98,8 @@ export default function CheckoutPage() {
                     <Image
                       src={(() => {
                         if (product.image.startsWith('http')) return product.image;
+                        if (product.image.startsWith('/uploads/')) return product.image;
                         if (product.image.startsWith('/')) return product.image;
-                        if (/\.(jpg|jpeg|png|webp|svg)$/i.test(product.image)) return `/uploads/${product.image}`;
                         return `/uploads/${product.image}`;
                       })()}
                       alt={product.name || 'Produk'}
@@ -107,7 +107,6 @@ export default function CheckoutPage() {
                       height={80}
                       className="object-contain w-full h-full"
                       unoptimized={true}
-                      priority
                       onError={e => { e.currentTarget.src = '/vercel.svg'; }}
                     />
                   )

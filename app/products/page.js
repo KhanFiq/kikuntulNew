@@ -95,8 +95,8 @@ export default function HomePage() {
                       <Image
                         src={(() => {
                           if (product.image.startsWith('http')) return product.image;
+                          if (product.image.startsWith('/uploads/')) return product.image;
                           if (product.image.startsWith('/')) return product.image;
-                          if (/\.(jpg|jpeg|png|webp|svg)$/i.test(product.image)) return `/uploads/${product.image}`;
                           return `/uploads/${product.image}`;
                         })()}
                         alt={product.name}

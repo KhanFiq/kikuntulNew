@@ -31,15 +31,39 @@ export default function EditProductPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setForm((prev) => ({ ...prev, image: reader.result }));
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // Upload file ke API upload
+      const formData = new FormData();
+      formData.append('file', file);
+      try {
+        const res = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        if (res.ok && data.path) {
+          setForm((prev) => ({ ...prev, image: data.path }));
+          setImagePreview(data.path);
+        } else {
+          // fallback preview
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setForm((prev) => ({ ...prev, image: reader.result }));
+            setImagePreview(reader.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      } catch (err) {
+        // fallback preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setForm((prev) => ({ ...prev, image: reader.result }));
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      }
       setImageFile(file);
     }
   };
