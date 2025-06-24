@@ -1,7 +1,7 @@
 import dbConnect from '@/lib/mongodb';
 import Order from '@/models/Order';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/api/auth/[...nextauth]/route';
+import { authOptions } from '../auth/[...nextauth]/route'; // fixed import path
 import { NextResponse } from 'next/server';
 
 // GET: List orders (admin: all, user: own)
