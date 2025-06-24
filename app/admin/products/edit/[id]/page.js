@@ -53,14 +53,13 @@ export default function EditProductPage() {
     if (imageFile) {
       const data = new FormData();
       data.append("file", imageFile);
-      // Ganti endpoint berikut sesuai backend Anda
       const uploadRes = await fetch("/api/upload", {
         method: "POST",
         body: data,
       });
       if (uploadRes.ok) {
         const result = await uploadRes.json();
-        imageUrl = result.url;
+        imageUrl = result.base64; // gunakan base64
       } else {
         setLoading(false);
         Swal.fire("Gagal", "Gagal upload gambar", "error");

@@ -71,6 +71,7 @@ export default function AdminProductsPage() {
                   src={(() => {
                     if (product.image.startsWith('http')) return product.image;
                     if (product.image.startsWith('/')) return product.image;
+                    if (product.image.startsWith('data:image/')) return product.image; // base64
                     if (/\.(jpg|jpeg|png|webp|svg)$/i.test(product.image)) return `/uploads/${product.image}`;
                     return `/uploads/${product.image}`;
                   })()}
@@ -78,7 +79,7 @@ export default function AdminProductsPage() {
                   width={300}
                   height={160}
                   className="mb-2 rounded group-hover:scale-105 transition h-40 w-full object-cover"
-                  unoptimized={product.image.startsWith('http')}
+                  unoptimized={product.image.startsWith('http') || product.image.startsWith('data:image/')}
                   onError={e => { e.currentTarget.src = '/vercel.svg'; }}
                 />
               )}

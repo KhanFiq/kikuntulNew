@@ -11,12 +11,7 @@ export async function POST(req) {
   }
   const buffer = Buffer.from(await file.arrayBuffer());
   const ext = file.name.split('.').pop();
-  const fileName = `${Date.now()}-${Math.random().toString(36).substring(2,8)}.${ext}`;
-  const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-  // Pastikan folder uploads ada
-  await mkdir(uploadDir, { recursive: true });
-  const filePath = path.join(uploadDir, fileName);
-  await writeFile(filePath, buffer);
-  const url = `/uploads/${fileName}`;
-  return new Response(JSON.stringify({ url }), { status: 200 });
+  // Konversi buffer ke base64
+  const base64 = `data:image/${ext};base64,${buffer.toString('base64')}`;
+  return new Response(JSON.stringify({ base64 }), { status: 200 });
 }
