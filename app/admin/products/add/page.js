@@ -15,15 +15,42 @@ export default function AddProductPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
+  // Fungsi resize image sebelum diubah ke base64
+  function resizeImage(file, maxWidth = 600, maxHeight = 400, quality = 0.7) {
+    return new Promise((resolve) => {
+      const img = new window.Image();
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setForm((prev) => ({ ...prev, image: reader.result }));
-        setImagePreview(reader.result);
+      reader.onload = (e) => {
+        img.onload = () => {
+          let width = img.width;
+          let height = img.height;
+          if (width > maxWidth) {
+            height *= maxWidth / width;
+            width = maxWidth;
+          }
+          if (height > maxHeight) {
+            width *= maxHeight / height;
+            height = maxHeight;
+          }
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.src = e.target.result;
       };
       reader.readAsDataURL(file);
+    });
+  }
+
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const resizedBase64 = await resizeImage(file, 600, 400, 0.7);
+      setForm((prev) => ({ ...prev, image: resizedBase64 }));
+      setImagePreview(resizedBase64);
       setImageFile(file);
     }
   };
