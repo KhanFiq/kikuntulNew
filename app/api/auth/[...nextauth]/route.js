@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import User from '@/models/User';
-import dbConnect from '@/app/lib/mongodb';
+import dbConnect from '@/lib/mongodb';
 import bcrypt from 'bcryptjs';
 
 export const authOptions = {
