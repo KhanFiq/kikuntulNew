@@ -81,32 +81,14 @@ export default function HomePage() {
             : products.map((product) => (
                 <div key={product._id} className="bg-white shadow-lg p-4 flex flex-col border border-blue-100 hover:shadow-2xl hover:scale-105 transition group rounded-xl">
                   {product.image && (
-                    product.image.startsWith('data:image/') ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={product.image}
-                        alt={product.name}
-                        width={300}
-                        height={160}
-                        className="mb-2 rounded group-hover:scale-105 transition h-40 w-full object-cover"
-                        style={{ objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <Image
-                        src={(() => {
-                          if (product.image.startsWith('http')) return product.image;
-                          if (product.image.startsWith('/uploads/')) return product.image;
-                          if (product.image.startsWith('/')) return product.image;
-                          return `/uploads/${product.image}`;
-                        })()}
-                        alt={product.name}
-                        width={300}
-                        height={160}
-                        className="mb-2 rounded group-hover:scale-105 transition h-40 w-full object-cover"
-                        unoptimized={true}
-                        onError={e => { e.currentTarget.src = '/vercel.svg'; }}
-                      />
-                    )
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      width={300}
+                      height={160}
+                      className="mb-2 rounded group-hover:scale-105 transition h-40 w-full object-cover"
+                      style={{ objectFit: 'cover' }}
+                    />
                   )}
                   <div className="font-bold text-lg text-blue-800 mb-1">{product.name}</div>
                   <span className="badge badge-info mb-2">{product.category}</span>

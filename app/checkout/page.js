@@ -83,41 +83,14 @@ export default function CheckoutPage() {
           {cart.map((product, idx) => (
             <div key={product._id || idx} className="bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl p-4 flex items-center gap-4 shadow group border border-blue-200">
               <div className="w-20 h-20 rounded-lg overflow-hidden bg-white border border-blue-100 flex-shrink-0">
-                {product.image ? (
-                  product.image.startsWith('data:image/') ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={product.image}
-                      alt={product.name || 'Produk'}
-                      width={80}
-                      height={80}
-                      className="object-contain w-full h-full"
-                      style={{ objectFit: 'contain' }}
-                    />
-                  ) : (
-                    <Image
-                      src={(() => {
-                        if (product.image.startsWith('http')) return product.image;
-                        if (product.image.startsWith('/uploads/')) return product.image;
-                        if (product.image.startsWith('/')) return product.image;
-                        return `/uploads/${product.image}`;
-                      })()}
-                      alt={product.name || 'Produk'}
-                      width={80}
-                      height={80}
-                      className="object-contain w-full h-full"
-                      unoptimized={true}
-                      onError={e => { e.currentTarget.src = '/vercel.svg'; }}
-                    />
-                  )
-                ) : (
-                  <Image
-                    src="/vercel.svg"
-                    alt="No Image"
+                {product.image && (
+                  <img
+                    src={product.image}
+                    alt={product.name || 'Produk'}
                     width={80}
                     height={80}
-                    className="object-contain w-full h-full opacity-30"
-                    priority
+                    className="object-contain w-full h-full"
+                    style={{ objectFit: 'contain' }}
                   />
                 )}
               </div>
